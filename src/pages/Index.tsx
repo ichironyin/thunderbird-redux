@@ -339,30 +339,34 @@ function EmailRow({
             )}
           </button>
 
-          <div className="w-px h-4 bg-border mx-1" />
+          {currentFolder !== "trash" && (
+            <>
+              <div className="w-px h-4 bg-border mx-1" />
 
-          <button
-            onClick={markAllRead}
-            className="p-1.5 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-            title="Marcar todos como lidos"
-          >
-            <CheckCheck size={15} />
-          </button>
-          <button
-            onClick={moveSelectedToTrash}
-            disabled={selectedIds.size === 0}
-            className="p-1.5 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            title="Mover selecionados para lixeira"
-          >
-            <Trash2 size={15} />
-          </button>
-          <button
-            onClick={moveAllToTrash}
-            className="p-1.5 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-            title="Mover todos para lixeira"
-          >
-            <Trash2 size={15} className="text-destructive" />
-          </button>
+              <button
+                onClick={markAllRead}
+                className="p-1.5 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
+                title="Marcar todos como lidos"
+              >
+                <CheckCheck size={15} />
+              </button>
+              <button
+                onClick={moveSelectedToTrash}
+                disabled={selectedIds.size === 0}
+                className="p-1.5 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                title="Mover selecionados para lixeira"
+              >
+                <Trash2 size={15} />
+              </button>
+              <button
+                onClick={moveAllToTrash}
+                className="p-1.5 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
+                title="Mover todos para lixeira"
+              >
+                <Trash2 size={15} className="text-destructive" />
+              </button>
+            </>
+          )}
 
           <span className="ml-auto text-xs text-muted-foreground">
             {visibleEmails.length} msgs
