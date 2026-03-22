@@ -1,20 +1,15 @@
 import { useState, useMemo, useCallback } from "react";
 import {
   Mail,
-  Send,
   Trash2,
   Inbox,
-  PenSquare,
   CheckSquare,
   Square,
   ChevronDown,
-  ChevronRight,
   LogOut,
-  Reply,
   MailOpen,
   CheckCheck,
   Minus,
-  X,
 } from "lucide-react";
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -133,6 +128,46 @@ const INITIAL_EMAILS: Record<string, Email[]> = {
       isRead: true,
       isTrash: true,
     },
+    {
+      id: "e8",
+      subject: "Alerta de Segurança: Tentativa de login suspeita",
+      from_name: "Security Team",
+      from_address: "security@empresa.com",
+      text: "Detectamos uma tentativa de login na sua conta a partir de um dispositivo não reconhecido.\n\nIP: 187.45.231.89\nLocalização: São Paulo, BR\nDispositivo: Chrome 122 / Windows 11\nHorário: 22/03/2025 às 03:47 UTC\n\nSe não foi você, recomendamos alterar sua senha imediatamente e habilitar autenticação em dois fatores.\n\n— Equipe de Segurança",
+      date: "2025-03-22 03:50",
+      isRead: false,
+      isTrash: false,
+    },
+    {
+      id: "e9",
+      subject: "Backup semanal concluído com sucesso",
+      from_name: "DBA Bot",
+      from_address: "dba-bot@empresa.com",
+      text: "Backup semanal finalizado.\n\n📦 Database: production_main\n📊 Tamanho: 42.8 GB\n⏱️ Duração: 18min 34s\n🗂️ Snapshots retidos: 12/12\n\nPróximo backup agendado: 29/03/2025 02:00 UTC",
+      date: "2025-03-22 02:18",
+      isRead: true,
+      isTrash: false,
+    },
+    {
+      id: "e10",
+      subject: "Convite: Tech Talk - Arquitetura de Microsserviços",
+      from_name: "RH Eventos",
+      from_address: "eventos@empresa.com",
+      text: "Olá João,\n\nVocê está convidado para a Tech Talk desta sexta-feira!\n\nTema: Arquitetura de Microsserviços na Prática\nPalestrante: Dr. Rafael Torres (ex-Netflix)\nData: 28/03/2025 às 15:00\nLocal: Auditório Principal / Streaming via Meet\n\nInscreva-se respondendo este email.\n\n— Equipe de Eventos",
+      date: "2025-03-21 16:20",
+      isRead: false,
+      isTrash: false,
+    },
+    {
+      id: "e11",
+      subject: "PR #1847 aprovado - Refactor payment gateway",
+      from_name: "GitHub",
+      from_address: "notifications@github.com",
+      text: "Your pull request #1847 has been approved by 2 reviewers.\n\n✅ @ana-beatriz approved\n✅ @carlos-mendes approved\n\n💬 Comments: 3 resolved, 0 pending\n🔄 CI: All checks passed\n\nReady to merge into main.",
+      date: "2025-03-21 09:33",
+      isRead: true,
+      isTrash: false,
+    },
   ],
   "acc-2": [
     {
@@ -209,9 +244,7 @@ function EmailRow({
   return (
     <div
       className={`flex items-center gap-2 px-3 py-2 border-b border-border cursor-pointer transition-colors ${
-        isFocused
-          ? "bg-mail-selected-row"
-          : "hover:bg-mail-hover-row"
+        isFocused ? "bg-mail-selected-row" : "hover:bg-mail-hover-row"
       }`}
     >
       <button
@@ -256,54 +289,6 @@ function EmailRow({
   );
 }
 
-// ── Compose Modal ──────────────────────────────────────────────────────────
-
-function ComposeModal({ onClose }: { onClose: () => void }) {
-  return (
-    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
-      <div className="bg-card border border-border rounded-lg w-full max-w-2xl shadow-2xl">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-          <h3 className="text-sm font-semibold text-foreground">Nova Mensagem</h3>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
-            <X size={16} />
-          </button>
-        </div>
-        <div className="p-4 space-y-3">
-          <input
-            type="text"
-            placeholder="Para:"
-            className="w-full bg-input border border-border rounded px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-          />
-          <input
-            type="text"
-            placeholder="Assunto:"
-            className="w-full bg-input border border-border rounded px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-          />
-          <textarea
-            rows={10}
-            placeholder="Escreva sua mensagem..."
-            className="w-full bg-input border border-border rounded px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring resize-none scrollbar-thin"
-          />
-        </div>
-        <div className="flex justify-end gap-2 px-4 py-3 border-t border-border">
-          <button
-            onClick={onClose}
-            className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Descartar
-          </button>
-          <button
-            onClick={onClose}
-            className="px-4 py-1.5 text-sm bg-primary text-primary-foreground rounded hover:opacity-90 transition-opacity font-medium"
-          >
-            Enviar
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ── Main Page ──────────────────────────────────────────────────────────────
 
 export default function Index() {
@@ -312,19 +297,16 @@ export default function Index() {
   const [currentFolder, setCurrentFolder] = useState<Folder>("inbox");
   const [focusedEmailId, setFocusedEmailId] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [showCompose, setShowCompose] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
   const activeAccount = accounts.find((a) => a.isActive)!;
   const accountEmails = allEmails[activeAccount.id] || [];
 
-  // Compute unread count dynamically
   const unreadCount = useMemo(
     () => accountEmails.filter((e) => !e.isRead && !e.isTrash).length,
     [accountEmails]
   );
 
-  // Visible emails based on folder
   const visibleEmails = useMemo(() => {
     if (currentFolder === "inbox") return accountEmails.filter((e) => !e.isTrash);
     if (currentFolder === "trash") return accountEmails.filter((e) => e.isTrash);
@@ -336,9 +318,7 @@ export default function Index() {
   // ── Actions ────────────────────────────────────────────────────────────
 
   const switchAccount = useCallback((id: string) => {
-    setAccounts((prev) =>
-      prev.map((a) => ({ ...a, isActive: a.id === id }))
-    );
+    setAccounts((prev) => prev.map((a) => ({ ...a, isActive: a.id === id })));
     setFocusedEmailId(null);
     setSelectedIds(new Set());
     setCurrentFolder("inbox");
@@ -434,19 +414,8 @@ export default function Index() {
     <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
       {/* ── Sidebar ─────────────────────────────────────────────────── */}
       <aside className="w-56 shrink-0 flex flex-col border-r border-border bg-sidebar">
-        {/* Compose button */}
-        <div className="p-3">
-          <button
-            onClick={() => setShowCompose(true)}
-            className="flex w-full items-center justify-center gap-2 bg-primary text-primary-foreground rounded px-3 py-2 text-sm font-medium hover:opacity-90 transition-opacity"
-          >
-            <PenSquare size={15} />
-            Nova Mensagem
-          </button>
-        </div>
-
         {/* Account selector */}
-        <div className="px-2 pb-2">
+        <div className="px-2 pt-3 pb-2">
           <button
             onClick={() => setAccountMenuOpen((p) => !p)}
             className="flex w-full items-center gap-2 px-3 py-2 rounded-sm bg-accent text-accent-foreground text-sm hover:opacity-90 transition-opacity"
@@ -543,30 +512,34 @@ export default function Index() {
             )}
           </button>
 
-          <div className="w-px h-4 bg-border mx-1" />
+          {currentFolder !== "trash" && (
+            <>
+              <div className="w-px h-4 bg-border mx-1" />
 
-          <button
-            onClick={markAllRead}
-            className="p-1.5 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-            title="Marcar todos como lidos"
-          >
-            <CheckCheck size={15} />
-          </button>
-          <button
-            onClick={moveSelectedToTrash}
-            disabled={selectedIds.size === 0}
-            className="p-1.5 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            title="Mover selecionados para lixeira"
-          >
-            <Trash2 size={15} />
-          </button>
-          <button
-            onClick={moveAllToTrash}
-            className="p-1.5 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-            title="Mover todos para lixeira"
-          >
-            <Trash2 size={15} className="text-destructive" />
-          </button>
+              <button
+                onClick={markAllRead}
+                className="p-1.5 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
+                title="Marcar todos como lidos"
+              >
+                <CheckCheck size={15} />
+              </button>
+              <button
+                onClick={moveSelectedToTrash}
+                disabled={selectedIds.size === 0}
+                className="p-1.5 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                title="Mover selecionados para lixeira"
+              >
+                <Trash2 size={15} />
+              </button>
+              <button
+                onClick={moveAllToTrash}
+                className="p-1.5 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
+                title="Mover todos para lixeira"
+              >
+                <Trash2 size={15} className="text-destructive" />
+              </button>
+            </>
+          )}
 
           <span className="ml-auto text-xs text-muted-foreground">
             {visibleEmails.length} msgs
@@ -626,22 +599,15 @@ export default function Index() {
                     <p className="text-muted-foreground text-xs">{focusedEmail.date}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 shrink-0">
-                  <button
-                    onClick={() => setShowCompose(true)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded bg-secondary text-secondary-foreground hover:bg-accent transition-colors"
-                  >
-                    <Reply size={13} />
-                    Responder
-                  </button>
+                {currentFolder !== "trash" && (
                   <button
                     onClick={() => moveToTrash([focusedEmail.id])}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded bg-secondary text-secondary-foreground hover:bg-destructive hover:text-destructive-foreground transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded bg-secondary text-secondary-foreground hover:bg-destructive hover:text-destructive-foreground transition-colors shrink-0"
                   >
                     <Trash2 size={13} />
                     Excluir
                   </button>
-                </div>
+                )}
               </div>
             </div>
 
@@ -661,9 +627,6 @@ export default function Index() {
           </>
         )}
       </main>
-
-      {/* Compose modal */}
-      {showCompose && <ComposeModal onClose={() => setShowCompose(false)} />}
     </div>
   );
 }
