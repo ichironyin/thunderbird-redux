@@ -110,7 +110,26 @@ const INITIAL_EMAILS: Record<string, Email[]> = {
       subject: "Newsletter Tech - Março 2025",
       from_name: "TechDigest",
       from_address: "news@techdigest.dev",
-      text: "Esta semana em tecnologia:\n\n🔹 React 20 anunciado com compilador nativo\n🔹 Rust ultrapassa Go em adoção enterprise\n🔹 Nova vulnerabilidade crítica no OpenSSL\n🔹 GitHub Copilot agora suporta debugging visual\n\nLeia mais em techdigest.dev/weekly/2025-12",
+      text: "Esta semana em tecnologia: React 20, Rust enterprise, OpenSSL vulnerability",
+      html: `<div style="font-family: sans-serif; color: #d4d4d8; line-height: 1.8;">
+        <div style="text-align: center; padding: 20px 0; border-bottom: 1px solid #333; margin-bottom: 20px;">
+          <h2 style="margin: 0; color: #f4f4f5; font-size: 20px;">📡 TechDigest Weekly</h2>
+          <p style="margin: 4px 0 0; color: #71717a; font-size: 13px;">Março 2025 • Edição #12</p>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=200&fit=crop" alt="Code on screen" style="width: 100%; border-radius: 8px; margin-bottom: 12px;" />
+          <h3 style="color: #60a5fa; margin: 0 0 6px;">React 20 anunciado com compilador nativo</h3>
+          <p style="margin: 0; font-size: 14px;">A equipe do React revelou a próxima versão major com compilação AOT integrada, prometendo ganhos de até 3x em performance inicial.</p>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <img src="https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=600&h=200&fit=crop" alt="Server room" style="width: 100%; border-radius: 8px; margin-bottom: 12px;" />
+          <h3 style="color: #60a5fa; margin: 0 0 6px;">Rust ultrapassa Go em adoção enterprise</h3>
+          <p style="margin: 0; font-size: 14px;">Pesquisa da Stack Overflow mostra Rust como a linguagem de sistemas mais adotada em novos projetos corporativos pela primeira vez.</p>
+        </div>
+        <div style="text-align: center; padding-top: 16px; border-top: 1px solid #333;">
+          <p style="color: #71717a; font-size: 12px;">Você recebeu este email porque se inscreveu em techdigest.dev</p>
+        </div>
+      </div>`,
       date: "2025-03-20 07:00",
       isRead: true,
       isTrash: true,
