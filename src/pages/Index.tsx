@@ -75,7 +75,22 @@ const INITIAL_EMAILS: Record<string, Email[]> = {
       subject: "Fatura #INV-20250322 - Serviços Cloud",
       from_name: "AWS Billing",
       from_address: "billing@aws.amazon.com",
-      text: "Prezado cliente,\n\nSua fatura referente ao período de Fevereiro/2025 está disponível.\n\nValor total: R$ 4.287,93\nVencimento: 05/04/2025\n\nDetalhamento:\n- EC2 Instances: R$ 1.890,00\n- RDS PostgreSQL: R$ 980,50\n- S3 Storage: R$ 412,33\n- CloudFront: R$ 305,10\n- Outros: R$ 700,00\n\nAcesse o console para mais detalhes.",
+      text: "Sua fatura referente ao período de Fevereiro/2025 está disponível. Valor total: R$ 4.287,93",
+      html: `<div style="font-family: sans-serif; color: #d4d4d8; line-height: 1.7;">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/512px-Amazon_Web_Services_Logo.svg.png" alt="AWS Logo" style="height: 40px; margin-bottom: 12px;" />
+        </div>
+        <p>Prezado cliente,</p>
+        <p>Sua fatura referente ao período de <strong>Fevereiro/2025</strong> está disponível.</p>
+        <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px;">
+          <tr style="border-bottom: 1px solid #333;"><td style="padding: 8px 0;">EC2 Instances</td><td style="text-align: right; padding: 8px 0;">R$ 1.890,00</td></tr>
+          <tr style="border-bottom: 1px solid #333;"><td style="padding: 8px 0;">RDS PostgreSQL</td><td style="text-align: right; padding: 8px 0;">R$ 980,50</td></tr>
+          <tr style="border-bottom: 1px solid #333;"><td style="padding: 8px 0;">S3 Storage</td><td style="text-align: right; padding: 8px 0;">R$ 412,33</td></tr>
+          <tr style="border-bottom: 1px solid #333;"><td style="padding: 8px 0;">CloudFront</td><td style="text-align: right; padding: 8px 0;">R$ 305,10</td></tr>
+          <tr style="font-weight: bold;"><td style="padding: 8px 0;">Total</td><td style="text-align: right; padding: 8px 0; color: #60a5fa;">R$ 4.287,93</td></tr>
+        </table>
+        <p style="color: #71717a; font-size: 13px;">Vencimento: 05/04/2025</p>
+      </div>`,
       date: "2025-03-21 14:30",
       isRead: true,
       isTrash: false,
