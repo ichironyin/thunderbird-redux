@@ -36,7 +36,6 @@ interface Email {
   date: string;
   isRead: boolean;
   isTrash: boolean;
-  isTrash: boolean;
 }
 
 type Folder = "inbox" | "trash";
