@@ -293,7 +293,6 @@ export default function Index() {
   const visibleEmails = useMemo(() => {
     if (currentFolder === "inbox") return accountEmails.filter((e) => !e.isTrash);
     if (currentFolder === "trash") return accountEmails.filter((e) => e.isTrash);
-    if (currentFolder === "sent") return []; // mock: no sent emails
     return [];
   }, [accountEmails, currentFolder]);
 
