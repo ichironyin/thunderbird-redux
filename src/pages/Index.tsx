@@ -1,20 +1,15 @@
 import { useState, useMemo, useCallback } from "react";
 import {
   Mail,
-  Send,
   Trash2,
   Inbox,
-  PenSquare,
   CheckSquare,
   Square,
   ChevronDown,
-  ChevronRight,
   LogOut,
-  Reply,
   MailOpen,
   CheckCheck,
   Minus,
-  X,
 } from "lucide-react";
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -105,6 +100,35 @@ const INITIAL_EMAILS: Record<string, Email[]> = {
       isTrash: false,
     },
     {
+      id: "e5",
+      subject: "Newsletter Tech - Março 2025",
+      from_name: "TechDigest",
+      from_address: "news@techdigest.dev",
+      text: "Esta semana em tecnologia: React 20, Rust enterprise, OpenSSL vulnerability",
+      html: `<div style="font-family: sans-serif; color: #d4d4d8; line-height: 1.8;">
+        <div style="text-align: center; padding: 20px 0; border-bottom: 1px solid #333; margin-bottom: 20px;">
+          <h2 style="margin: 0; color: #f4f4f5; font-size: 20px;">📡 TechDigest Weekly</h2>
+          <p style="margin: 4px 0 0; color: #71717a; font-size: 13px;">Março 2025 • Edição #12</p>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=200&fit=crop" alt="Code on screen" style="width: 100%; border-radius: 8px; margin-bottom: 12px;" />
+          <h3 style="color: #60a5fa; margin: 0 0 6px;">React 20 anunciado com compilador nativo</h3>
+          <p style="margin: 0; font-size: 14px;">A equipe do React revelou a próxima versão major com compilação AOT integrada, prometendo ganhos de até 3x em performance inicial.</p>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <img src="https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=600&h=200&fit=crop" alt="Server room" style="width: 100%; border-radius: 8px; margin-bottom: 12px;" />
+          <h3 style="color: #60a5fa; margin: 0 0 6px;">Rust ultrapassa Go em adoção enterprise</h3>
+          <p style="margin: 0; font-size: 14px;">Pesquisa da Stack Overflow mostra Rust como a linguagem de sistemas mais adotada em novos projetos corporativos pela primeira vez.</p>
+        </div>
+        <div style="text-align: center; padding-top: 16px; border-top: 1px solid #333;">
+          <p style="color: #71717a; font-size: 12px;">Você recebeu este email porque se inscreveu em techdigest.dev</p>
+        </div>
+      </div>`,
+      date: "2025-03-20 07:00",
+      isRead: true,
+      isTrash: true,
+    },
+    {
       id: "e8",
       subject: "Alerta de Segurança: Tentativa de login suspeita",
       from_name: "Security Team",
@@ -143,35 +167,6 @@ const INITIAL_EMAILS: Record<string, Email[]> = {
       date: "2025-03-21 09:33",
       isRead: true,
       isTrash: false,
-    },
-    {
-      id: "e5",
-      subject: "Newsletter Tech - Março 2025",
-      from_name: "TechDigest",
-      from_address: "news@techdigest.dev",
-      text: "Esta semana em tecnologia: React 20, Rust enterprise, OpenSSL vulnerability",
-      html: `<div style="font-family: sans-serif; color: #d4d4d8; line-height: 1.8;">
-        <div style="text-align: center; padding: 20px 0; border-bottom: 1px solid #333; margin-bottom: 20px;">
-          <h2 style="margin: 0; color: #f4f4f5; font-size: 20px;">📡 TechDigest Weekly</h2>
-          <p style="margin: 4px 0 0; color: #71717a; font-size: 13px;">Março 2025 • Edição #12</p>
-        </div>
-        <div style="margin-bottom: 20px;">
-          <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=200&fit=crop" alt="Code on screen" style="width: 100%; border-radius: 8px; margin-bottom: 12px;" />
-          <h3 style="color: #60a5fa; margin: 0 0 6px;">React 20 anunciado com compilador nativo</h3>
-          <p style="margin: 0; font-size: 14px;">A equipe do React revelou a próxima versão major com compilação AOT integrada, prometendo ganhos de até 3x em performance inicial.</p>
-        </div>
-        <div style="margin-bottom: 20px;">
-          <img src="https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=600&h=200&fit=crop" alt="Server room" style="width: 100%; border-radius: 8px; margin-bottom: 12px;" />
-          <h3 style="color: #60a5fa; margin: 0 0 6px;">Rust ultrapassa Go em adoção enterprise</h3>
-          <p style="margin: 0; font-size: 14px;">Pesquisa da Stack Overflow mostra Rust como a linguagem de sistemas mais adotada em novos projetos corporativos pela primeira vez.</p>
-        </div>
-        <div style="text-align: center; padding-top: 16px; border-top: 1px solid #333;">
-          <p style="color: #71717a; font-size: 12px;">Você recebeu este email porque se inscreveu em techdigest.dev</p>
-        </div>
-      </div>`,
-      date: "2025-03-20 07:00",
-      isRead: true,
-      isTrash: true,
     },
   ],
   "acc-2": [
@@ -249,9 +244,7 @@ function EmailRow({
   return (
     <div
       className={`flex items-center gap-2 px-3 py-2 border-b border-border cursor-pointer transition-colors ${
-        isFocused
-          ? "bg-mail-selected-row"
-          : "hover:bg-mail-hover-row"
+        isFocused ? "bg-mail-selected-row" : "hover:bg-mail-hover-row"
       }`}
     >
       <button
@@ -296,7 +289,147 @@ function EmailRow({
   );
 }
 
-// (Compose modal removed — users don't have send access)
+// ── Main Page ──────────────────────────────────────────────────────────────
+
+export default function Index() {
+  const [accounts, setAccounts] = useState<Account[]>(INITIAL_ACCOUNTS);
+  const [allEmails, setAllEmails] = useState<Record<string, Email[]>>(INITIAL_EMAILS);
+  const [currentFolder, setCurrentFolder] = useState<Folder>("inbox");
+  const [focusedEmailId, setFocusedEmailId] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+
+  const activeAccount = accounts.find((a) => a.isActive)!;
+  const accountEmails = allEmails[activeAccount.id] || [];
+
+  const unreadCount = useMemo(
+    () => accountEmails.filter((e) => !e.isRead && !e.isTrash).length,
+    [accountEmails]
+  );
+
+  const visibleEmails = useMemo(() => {
+    if (currentFolder === "inbox") return accountEmails.filter((e) => !e.isTrash);
+    if (currentFolder === "trash") return accountEmails.filter((e) => e.isTrash);
+    return [];
+  }, [accountEmails, currentFolder]);
+
+  const focusedEmail = visibleEmails.find((e) => e.id === focusedEmailId) || null;
+
+  // ── Actions ────────────────────────────────────────────────────────────
+
+  const switchAccount = useCallback((id: string) => {
+    setAccounts((prev) => prev.map((a) => ({ ...a, isActive: a.id === id })));
+    setFocusedEmailId(null);
+    setSelectedIds(new Set());
+    setCurrentFolder("inbox");
+    setAccountMenuOpen(false);
+  }, []);
+
+  const removeAccount = useCallback((id: string) => {
+    setAccounts((prev) => {
+      const remaining = prev.filter((a) => a.id !== id);
+      if (remaining.length > 0 && !remaining.some((a) => a.isActive)) {
+        remaining[0].isActive = true;
+      }
+      return remaining;
+    });
+  }, []);
+
+  const updateEmails = useCallback(
+    (updater: (emails: Email[]) => Email[]) => {
+      setAllEmails((prev) => ({
+        ...prev,
+        [activeAccount.id]: updater(prev[activeAccount.id] || []),
+      }));
+    },
+    [activeAccount.id]
+  );
+
+  const toggleSelect = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  const selectAll = useCallback(() => {
+    const allIds = visibleEmails.map((e) => e.id);
+    const allSelected = allIds.every((id) => selectedIds.has(id));
+    setSelectedIds(allSelected ? new Set() : new Set(allIds));
+  }, [visibleEmails, selectedIds]);
+
+  const moveToTrash = useCallback(
+    (ids: string[]) => {
+      updateEmails((emails) =>
+        emails.map((e) => (ids.includes(e.id) ? { ...e, isTrash: true } : e))
+      );
+      setSelectedIds(new Set());
+      if (focusedEmailId && ids.includes(focusedEmailId)) setFocusedEmailId(null);
+    },
+    [updateEmails, focusedEmailId]
+  );
+
+  const moveAllToTrash = useCallback(() => {
+    moveToTrash(visibleEmails.map((e) => e.id));
+  }, [moveToTrash, visibleEmails]);
+
+  const moveSelectedToTrash = useCallback(() => {
+    moveToTrash(Array.from(selectedIds));
+  }, [moveToTrash, selectedIds]);
+
+  const markAllRead = useCallback(() => {
+    updateEmails((emails) =>
+      emails.map((e) =>
+        visibleEmails.some((v) => v.id === e.id) ? { ...e, isRead: true } : e
+      )
+    );
+  }, [updateEmails, visibleEmails]);
+
+  const markAsRead = useCallback(
+    (id: string) => {
+      updateEmails((emails) =>
+        emails.map((e) => (e.id === id ? { ...e, isRead: true } : e))
+      );
+    },
+    [updateEmails]
+  );
+
+  const handleFocusEmail = useCallback(
+    (id: string) => {
+      setFocusedEmailId(id);
+      markAsRead(id);
+    },
+    [markAsRead]
+  );
+
+  const allVisibleSelected =
+    visibleEmails.length > 0 && visibleEmails.every((e) => selectedIds.has(e.id));
+  const someVisibleSelected = visibleEmails.some((e) => selectedIds.has(e.id));
+
+  // ── Render ─────────────────────────────────────────────────────────────
+
+  return (
+    <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
+      {/* ── Sidebar ─────────────────────────────────────────────────── */}
+      <aside className="w-56 shrink-0 flex flex-col border-r border-border bg-sidebar">
+        {/* Account selector */}
+        <div className="px-2 pt-3 pb-2">
+          <button
+            onClick={() => setAccountMenuOpen((p) => !p)}
+            className="flex w-full items-center gap-2 px-3 py-2 rounded-sm bg-accent text-accent-foreground text-sm hover:opacity-90 transition-opacity"
+          >
+            <Mail size={14} className="shrink-0" />
+            <span className="flex-1 text-left truncate text-xs font-medium">
+              {activeAccount.email}
+            </span>
+            <ChevronDown
+              size={14}
+              className={`shrink-0 transition-transform ${accountMenuOpen ? "rotate-180" : ""}`}
+            />
+          </button>
+
           {accountMenuOpen && (
             <div className="mt-1 border border-border rounded bg-popover">
               {accounts.map((acc) => (
@@ -469,7 +602,7 @@ function EmailRow({
                 {currentFolder !== "trash" && (
                   <button
                     onClick={() => moveToTrash([focusedEmail.id])}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded bg-secondary text-secondary-foreground hover:bg-destructive hover:text-destructive-foreground transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded bg-secondary text-secondary-foreground hover:bg-destructive hover:text-destructive-foreground transition-colors shrink-0"
                   >
                     <Trash2 size={13} />
                     Excluir
@@ -494,8 +627,6 @@ function EmailRow({
           </>
         )}
       </main>
-
-    </div>
     </div>
   );
 }
