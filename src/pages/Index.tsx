@@ -32,8 +32,10 @@ interface Email {
   from_name: string;
   from_address: string;
   text: string;
+  html?: string;
   date: string;
   isRead: boolean;
+  isTrash: boolean;
   isTrash: boolean;
 }
 
