@@ -422,14 +422,7 @@ function EmailRow({
                     <p className="text-muted-foreground text-xs">{focusedEmail.date}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 shrink-0">
-                  <button
-                    onClick={() => setShowCompose(true)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded bg-secondary text-secondary-foreground hover:bg-accent transition-colors"
-                  >
-                    <Reply size={13} />
-                    Responder
-                  </button>
+                {currentFolder !== "trash" && (
                   <button
                     onClick={() => moveToTrash([focusedEmail.id])}
                     className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded bg-secondary text-secondary-foreground hover:bg-destructive hover:text-destructive-foreground transition-colors"
@@ -437,7 +430,7 @@ function EmailRow({
                     <Trash2 size={13} />
                     Excluir
                   </button>
-                </div>
+                )}
               </div>
             </div>
 
