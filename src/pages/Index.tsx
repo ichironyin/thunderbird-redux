@@ -32,12 +32,13 @@ interface Email {
   from_name: string;
   from_address: string;
   text: string;
+  html?: string;
   date: string;
   isRead: boolean;
   isTrash: boolean;
 }
 
-type Folder = "inbox" | "sent" | "trash";
+type Folder = "inbox" | "trash";
 
 // ── Mock Data ──────────────────────────────────────────────────────────────
 
@@ -73,7 +74,22 @@ const INITIAL_EMAILS: Record<string, Email[]> = {
       subject: "Fatura #INV-20250322 - Serviços Cloud",
       from_name: "AWS Billing",
       from_address: "billing@aws.amazon.com",
-      text: "Prezado cliente,\n\nSua fatura referente ao período de Fevereiro/2025 está disponível.\n\nValor total: R$ 4.287,93\nVencimento: 05/04/2025\n\nDetalhamento:\n- EC2 Instances: R$ 1.890,00\n- RDS PostgreSQL: R$ 980,50\n- S3 Storage: R$ 412,33\n- CloudFront: R$ 305,10\n- Outros: R$ 700,00\n\nAcesse o console para mais detalhes.",
+      text: "Sua fatura referente ao período de Fevereiro/2025 está disponível. Valor total: R$ 4.287,93",
+      html: `<div style="font-family: sans-serif; color: #d4d4d8; line-height: 1.7;">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/512px-Amazon_Web_Services_Logo.svg.png" alt="AWS Logo" style="height: 40px; margin-bottom: 12px;" />
+        </div>
+        <p>Prezado cliente,</p>
+        <p>Sua fatura referente ao período de <strong>Fevereiro/2025</strong> está disponível.</p>
+        <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px;">
+          <tr style="border-bottom: 1px solid #333;"><td style="padding: 8px 0;">EC2 Instances</td><td style="text-align: right; padding: 8px 0;">R$ 1.890,00</td></tr>
+          <tr style="border-bottom: 1px solid #333;"><td style="padding: 8px 0;">RDS PostgreSQL</td><td style="text-align: right; padding: 8px 0;">R$ 980,50</td></tr>
+          <tr style="border-bottom: 1px solid #333;"><td style="padding: 8px 0;">S3 Storage</td><td style="text-align: right; padding: 8px 0;">R$ 412,33</td></tr>
+          <tr style="border-bottom: 1px solid #333;"><td style="padding: 8px 0;">CloudFront</td><td style="text-align: right; padding: 8px 0;">R$ 305,10</td></tr>
+          <tr style="font-weight: bold;"><td style="padding: 8px 0;">Total</td><td style="text-align: right; padding: 8px 0; color: #60a5fa;">R$ 4.287,93</td></tr>
+        </table>
+        <p style="color: #71717a; font-size: 13px;">Vencimento: 05/04/2025</p>
+      </div>`,
       date: "2025-03-21 14:30",
       isRead: true,
       isTrash: false,
@@ -93,7 +109,26 @@ const INITIAL_EMAILS: Record<string, Email[]> = {
       subject: "Newsletter Tech - Março 2025",
       from_name: "TechDigest",
       from_address: "news@techdigest.dev",
-      text: "Esta semana em tecnologia:\n\n🔹 React 20 anunciado com compilador nativo\n🔹 Rust ultrapassa Go em adoção enterprise\n🔹 Nova vulnerabilidade crítica no OpenSSL\n🔹 GitHub Copilot agora suporta debugging visual\n\nLeia mais em techdigest.dev/weekly/2025-12",
+      text: "Esta semana em tecnologia: React 20, Rust enterprise, OpenSSL vulnerability",
+      html: `<div style="font-family: sans-serif; color: #d4d4d8; line-height: 1.8;">
+        <div style="text-align: center; padding: 20px 0; border-bottom: 1px solid #333; margin-bottom: 20px;">
+          <h2 style="margin: 0; color: #f4f4f5; font-size: 20px;">📡 TechDigest Weekly</h2>
+          <p style="margin: 4px 0 0; color: #71717a; font-size: 13px;">Março 2025 • Edição #12</p>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=200&fit=crop" alt="Code on screen" style="width: 100%; border-radius: 8px; margin-bottom: 12px;" />
+          <h3 style="color: #60a5fa; margin: 0 0 6px;">React 20 anunciado com compilador nativo</h3>
+          <p style="margin: 0; font-size: 14px;">A equipe do React revelou a próxima versão major com compilação AOT integrada, prometendo ganhos de até 3x em performance inicial.</p>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <img src="https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=600&h=200&fit=crop" alt="Server room" style="width: 100%; border-radius: 8px; margin-bottom: 12px;" />
+          <h3 style="color: #60a5fa; margin: 0 0 6px;">Rust ultrapassa Go em adoção enterprise</h3>
+          <p style="margin: 0; font-size: 14px;">Pesquisa da Stack Overflow mostra Rust como a linguagem de sistemas mais adotada em novos projetos corporativos pela primeira vez.</p>
+        </div>
+        <div style="text-align: center; padding-top: 16px; border-top: 1px solid #333;">
+          <p style="color: #71717a; font-size: 12px;">Você recebeu este email porque se inscreveu em techdigest.dev</p>
+        </div>
+      </div>`,
       date: "2025-03-20 07:00",
       isRead: true,
       isTrash: true,
@@ -293,7 +328,6 @@ export default function Index() {
   const visibleEmails = useMemo(() => {
     if (currentFolder === "inbox") return accountEmails.filter((e) => !e.isTrash);
     if (currentFolder === "trash") return accountEmails.filter((e) => e.isTrash);
-    if (currentFolder === "sent") return []; // mock: no sent emails
     return [];
   }, [accountEmails, currentFolder]);
 
@@ -474,16 +508,6 @@ export default function Index() {
             }}
           />
           <FolderItem
-            icon={Send}
-            label="Enviados"
-            isActive={currentFolder === "sent"}
-            onClick={() => {
-              setCurrentFolder("sent");
-              setFocusedEmailId(null);
-              setSelectedIds(new Set());
-            }}
-          />
-          <FolderItem
             icon={Trash2}
             label="Lixeira"
             isActive={currentFolder === "trash"}
@@ -623,9 +647,16 @@ export default function Index() {
 
             {/* Body */}
             <div className="flex-1 overflow-y-auto scrollbar-thin px-6 py-5">
-              <pre className="text-sm text-foreground whitespace-pre-wrap font-sans leading-relaxed">
-                {focusedEmail.text}
-              </pre>
+              {focusedEmail.html ? (
+                <div
+                  className="text-sm text-foreground leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: focusedEmail.html }}
+                />
+              ) : (
+                <pre className="text-sm text-foreground whitespace-pre-wrap font-sans leading-relaxed">
+                  {focusedEmail.text}
+                </pre>
+              )}
             </div>
           </>
         )}
