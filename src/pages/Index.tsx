@@ -648,9 +648,16 @@ export default function Index() {
 
             {/* Body */}
             <div className="flex-1 overflow-y-auto scrollbar-thin px-6 py-5">
-              <pre className="text-sm text-foreground whitespace-pre-wrap font-sans leading-relaxed">
-                {focusedEmail.text}
-              </pre>
+              {focusedEmail.html ? (
+                <div
+                  className="text-sm text-foreground leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: focusedEmail.html }}
+                />
+              ) : (
+                <pre className="text-sm text-foreground whitespace-pre-wrap font-sans leading-relaxed">
+                  {focusedEmail.text}
+                </pre>
+              )}
             </div>
           </>
         )}
