@@ -473,16 +473,6 @@ export default function Index() {
             }}
           />
           <FolderItem
-            icon={Send}
-            label="Enviados"
-            isActive={currentFolder === "sent"}
-            onClick={() => {
-              setCurrentFolder("sent");
-              setFocusedEmailId(null);
-              setSelectedIds(new Set());
-            }}
-          />
-          <FolderItem
             icon={Trash2}
             label="Lixeira"
             isActive={currentFolder === "trash"}
