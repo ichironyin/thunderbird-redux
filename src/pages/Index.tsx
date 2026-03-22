@@ -451,8 +451,7 @@ function EmailRow({
         )}
       </main>
 
-      {/* Compose modal */}
-      {showCompose && <ComposeModal onClose={() => setShowCompose(false)} />}
+    </div>
     </div>
   );
 }
