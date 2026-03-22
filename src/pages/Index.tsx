@@ -37,7 +37,7 @@ interface Email {
   isTrash: boolean;
 }
 
-type Folder = "inbox" | "sent" | "trash";
+type Folder = "inbox" | "trash";
 
 // ── Mock Data ──────────────────────────────────────────────────────────────
 
